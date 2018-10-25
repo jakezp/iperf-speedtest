@@ -15,7 +15,8 @@ echo -e "Results:" | tee /tmp/results.tmp
 # iperf tests
 nc -vz $hostname 5201 -w 1 >/dev/null 2>&1
 if [[ ! $? == 0 ]]; then
-  echo iperf host down
+  echo -e iperf host down
+  echo -e " "
   curl -s -F "token=$token" -F "user=$user" -F "title=iperf server down" -F "message=iperf server - $hostname is down. Investigate..." https://api.pushover.net/1/messages.json  >/dev/null 2>&1
 else
   echo -e iperf results - $hostname: | tee -a /tmp/results.tmp

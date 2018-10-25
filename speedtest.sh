@@ -5,8 +5,8 @@ token=$3
 user=$4
 #----------------------------
 
-received=$(iperf3 -c $hostname -P 20 -t $duration -R -J | jq -r '.end.sum_received.bits_per_second')
-sent=$(iperf3 -c $hostname -P 20 -t $duration -J | jq -r '.end.sum_sent.bits_per_second')
+received=$(iperf3 -c $hostname -P 10 -t $duration -R -J | jq -r '.end.sum_received.bits_per_second')
+sent=$(iperf3 -c $hostname -P 10 -t $duration -J | jq -r '.end.sum_sent.bits_per_second')
 ping=$(ping -c 4 $hostname | awk -F '/' 'END {print $5}')
 jitter=$(iperf3 -c $hostname -u -t 5 -J | jq -r '.end.sum.jitter_ms')
 

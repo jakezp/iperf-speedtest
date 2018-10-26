@@ -3,6 +3,7 @@ hostname=$1
 duration=$2
 token=$3
 user=$4
+minihost=$5
 #----------------------------
 
 received=$(iperf3 -c $hostname -P 20 -t $duration -R -J | jq -r '.end.sum_received.bits_per_second')
@@ -39,6 +40,23 @@ echo -e Download speed: $(bc <<< "scale=2;$speed_down/1024/1024") Mbps | tee -a 
 echo -e Upload speed: $(bc <<< "scale=2;$speed_up/1024/1024") Mbps | tee -a /tmp/results.tmp
 echo -e Latency: $speed_latency ms | tee -a /tmp/results.tmp
 echo -e Share: $speed_share | tee -a /tmp/results.tmp
+echo -e " " | tee -a /tmp/results.tmp
 
+# speedtest mini server - optional
+if [[ -n $minihost ]]; then
+  mini_speedtest="$(speedtest-cli --json --mini $minihost)"
+  mini_speed_host=$(echo $mini_speedtest | jq -r '.server.name')
+  mini_speed_down=$(echo $mini_speedtest | jq -r '.download')
+  mini_speed_up=$(echo $mini_speedtest | jq -r '.upload')
+  mini_speed_latency=$(echo $mini_speedtest | jq -r '.ping')
+
+  echo -e mini-speedtest results - $mini_speed_host: | tee -a /tmp/results.tmp
+  echo -e Download speed: $(bc <<< "scale=2;$mini_speed_down/1024/1024") Mbps | tee -a /tmp/results.tmp
+  echo -e Upload speed: $(bc <<< "scale=2;$mini_speed_up/1024/1024") Mbps | tee -a /tmp/results.tmp
+  echo -e Latency: $mini_speed_latency ms | tee -a /tmp/results.tmp
+fi
+
+echo -e " "
+echo -e "Test date: $(echo $speedtest | jq -r '.timestamp')"
 curl -s -F "token=$token" -F "user=$user" -F "title=Speedtest results" -F "message=$(cat /tmp/results.tmp)" https://api.pushover.net/1/messages.json  >/dev/null 2>&1
 rm /tmp/results.tmp

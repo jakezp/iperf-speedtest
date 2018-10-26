@@ -55,9 +55,9 @@ if [[ -n $minihost ]]; then
   echo -e Download speed: $(bc <<< "scale=2;$mini_speed_down/1024/1024") Mbps | tee -a /tmp/results.tmp
   echo -e Upload speed: $(bc <<< "scale=2;$mini_speed_up/1024/1024") Mbps | tee -a /tmp/results.tmp
   echo -e Latency: $mini_speed_latency ms | tee -a /tmp/results.tmp
+  echo -e " " | tee -a /tmp/results.tmp
 fi
 
-echo -e " "
-echo -e "Test date: $(echo $speedtest | jq -r '.timestamp')"
+echo -e "Test date: $(echo $speedtest | jq -r '.timestamp')"  | tee -a /tmp/results.tmp
 curl -s -F "token=$token" -F "user=$user" -F "title=Speedtest results" -F "message=$(cat /tmp/results.tmp)" https://api.pushover.net/1/messages.json  >/dev/null 2>&1
 rm /tmp/results.tmp

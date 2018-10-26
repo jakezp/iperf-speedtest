@@ -6,8 +6,8 @@ user=$4
 minihost=$5
 #----------------------------
 
-received=$(iperf3 -c $hostname -P 20 -t $duration -R -J | jq -r '.end.sum_received.bits_per_second')
-sent=$(iperf3 -c $hostname -P 20 -t $duration -J | jq -r '.end.sum_sent.bits_per_second')
+received=$(iperf3 -c $hostname -P 10 -t $duration -R -J | jq -r '.end.sum_received.bits_per_second')
+sent=$(iperf3 -c $hostname -P 10 -t $duration -J | jq -r '.end.sum_sent.bits_per_second')
 ping=$(ping -c 4 $hostname | awk -F '/' 'END {print $5}')
 jitter=$(iperf3 -c $hostname -u -t 5 -J | jq -r '.end.sum.jitter_ms')
 
@@ -16,7 +16,8 @@ echo -e "Results:" | tee /tmp/results.tmp
 # iperf tests
 nc -vz $hostname 5201 -w 1 >/dev/null 2>&1
 if [[ ! $? == 0 ]]; then
-  echo iperf host down
+  echo -e iperf host down
+  echo -e " "
   curl -s -F "token=$token" -F "user=$user" -F "title=iperf server down" -F "message=iperf server - $hostname is down. Investigate..." https://api.pushover.net/1/messages.json  >/dev/null 2>&1
 else
   echo -e iperf results - $hostname: | tee -a /tmp/results.tmp

@@ -1,0 +1,10 @@
+# Update this file with your pushover and telegram details and copy it to /root volume
+
+# Telegram details
+token="<telegram_api_token"
+url="https://api.telegram.org/bot${token}"
+chat_id="telegram_chat_id"
+
+# Pushover details
+pushtoken="pushover_api_token"
+pushuser="pushover_user_token"

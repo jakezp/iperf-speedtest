@@ -46,5 +46,8 @@ for hostname in $*; do
     curl -s "${url}/sendMessage?chat_id=${chat_id}" --data-urlencode "text=$(cat /root/speedtest/results/$download_results)"
     curl -s "${url}/sendMessage?chat_id=${chat_id}" --data-urlencode "text=$(cat /root/speedtest/results/$upload_results)"
     curl -s "${url}/sendMessage?chat_id=${chat_id}" --data-urlencode "text=$(cat /root/speedtest/results/$packet_loss_results)"
+    curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$download_results" "${url}/sendDocument"
+    curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$upload_results" "${url}/sendDocument"
+    curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$packet_loss_results" "${url}/sendDocument"
   fi
 done

@@ -27,7 +27,7 @@ echo -e "**Results**\n " | tee /tmp/results.tmp
 for hostname in $*; do
   if [[ $hostname == emoncms.jakezp.co.za ]]; then
     port=5201
-  elif [[ $hostname == iperf.atomic.ac ]]; then
+  else
     port=3334
   fi
   nc -vz $hostname $port -w 1 >/dev/null 2>&1

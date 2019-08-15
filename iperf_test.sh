@@ -19,7 +19,7 @@ iperf_send () {
 
 iperf_packet_loss () {
   packet_loss_results=$(date +%Y-%m-%d-%H-%M-%S)-iperf3-$1-packet_loss.json
-  iperf3 -4 -V -R -t 10 -O 3 -u -b 40M -l 1460 -c $1 -p $2
+  iperf3 -4 -V -R -t 10 -O 3 -u -b 80M -l 1460 -c $1 -p $2 -J > /root/speedtest/results/$packet_loss_results
 }
 
 echo -e "**Results**\n " | tee /tmp/results.tmp
@@ -50,7 +50,7 @@ for hostname in $*; do
     echo -e "Download speed: $(bc <<< "scale=2;$download/1024/1024") Mbps" | tee -a /tmp/results.tmp
     echo -e "Upload speed: $(bc <<< "scale=2;$upload/1024/1024") Mbps" | tee -a /tmp/results.tmp
     echo -e "Latency: $ping ms" | tee -a /tmp/results.tmp
-    echo -e "Packet loss (UDP): $lost_packets / $total_packets (${lost_percent}%)" | tee -a /tmp/results.tmp
+    echo -e "Packet loss (udp): $lost_packets / $total_packets (${lost_percent}%)" | tee -a /tmp/results.tmp
     echo -e "Date: $(date '+%Y-%m-%d %H:%M:%S')" | tee -a /tmp/results.tmp
     #echo -e Jitter: $jitter ms | tee -a /tmp/results.tmp
     echo -e " " | tee -a /tmp/results.tmp

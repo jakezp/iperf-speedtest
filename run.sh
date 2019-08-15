@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export TZ
+
 # Configure cron
 if [[ ! -f /var/spool/cron/crontabs/root ]]; then
   mv /crontab /var/spool/cron/crontabs/root

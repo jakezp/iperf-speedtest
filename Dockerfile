@@ -15,9 +15,10 @@ ADD speedtest.sh /speedtest.sh
 ADD alt_speedtest.sh /alt_speedtest.sh
 ADD iperf_test.sh /iperf_test.sh
 ADD speedtest_config.sample /speedtest_config.sample
+ADD raw_iperf_test.sh /raw_iperf_test.sh
 
 # Set permissions
-RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh /iperf_test.sh
+RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh /iperf_test.sh /raw_iperf_test.sh
 
 # Expose volumes & ports
 VOLUME ["/var/spool/cron/crontabs"]

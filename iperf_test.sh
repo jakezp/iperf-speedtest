@@ -17,7 +17,12 @@ iperf_send () {
   iperf3 -4 -V -t 5 -O 3 -l 1460 -c $1 -p $2 -J > /root/speedtest/results/$upload_results
 }
 
-echo -e "iperf test results:\n " | tee /tmp/results.tmp
+iperf_packet_loss () {
+  packet_loss_results=$(date +%Y-%m-%d-%H-%M-%S)-iperf3-$1-packet_loss.json
+  iperf3 -4 -V -R -t 10 -O 3 -u -b 40M -l 1460 -c $1 -p $2
+}
+
+echo -e "**Results**\n " | tee /tmp/results.tmp
 
 for hostname in $*; do
   if [[ $hostname == emoncms.jakezp.co.za ]]; then
@@ -33,14 +38,19 @@ for hostname in $*; do
   else
     iperf_receive $hostname $port
     iperf_send $hostname $port
+    iperf_packet_loss $hostname $port
     download=$(cat /root/speedtest/results/$download_results | jq -r '.end.sum_received.bits_per_second')
     upload=$(cat /root/speedtest/results/$upload_results | jq -r '.end.sum_sent.bits_per_second')
+    total_packets=$(cat /root/speedtest/results/$packet_loss_results | jq -r '.end.sum.packets')
+    lost_packets=$(cat /root/speedtest/results/$packet_loss_results | jq -r '.end.sum.lost_packets')
+    lost_percent=$(cat /root/speedtest/results/$packet_loss_results | jq -r '.end.sum.lost_percent')
     ping=$(ping -c 4 $hostname | awk -F '/' 'END {print $5}')
     #jitter=$(iperf3 -c $hostname -u -t 5 -J | jq -r '.end.sum.jitter_ms')
     echo -e "$hostname:" | tee -a /tmp/results.tmp
     echo -e "Download speed: $(bc <<< "scale=2;$download/1024/1024") Mbps" | tee -a /tmp/results.tmp
     echo -e "Upload speed: $(bc <<< "scale=2;$upload/1024/1024") Mbps" | tee -a /tmp/results.tmp
     echo -e "Latency: $ping ms" | tee -a /tmp/results.tmp
+    echo -e "Packet loss (UDP): $lost_packets / $total_packets (${lost_percent}%)" | tee -a /tmp/results.tmp
     echo -e "Date: $(date '+%Y-%m-%d %H:%M:%S')" | tee -a /tmp/results.tmp
     #echo -e Jitter: $jitter ms | tee -a /tmp/results.tmp
     echo -e " " | tee -a /tmp/results.tmp

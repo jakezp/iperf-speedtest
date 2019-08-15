@@ -1,5 +1,5 @@
 #!/bin/bash
-source /root/telegram_config
+source /root/speedtest_config
 
 # create results directory
 if [[ ! -d /root/speedtest/results ]]; then

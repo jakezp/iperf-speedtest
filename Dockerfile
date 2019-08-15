@@ -13,7 +13,7 @@ ADD crontab /crontab
 ADD run.sh /run.sh
 ADD speedtest.sh /speedtest.sh
 ADD alt_speedtest.sh /alt_speedtest.sh
-ADD speedtest_config /speedtest_config.sample
+ADD speedtest_config.sample /speedtest_config.sample
 
 # Set permissions
 RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh

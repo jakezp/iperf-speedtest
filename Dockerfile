@@ -13,10 +13,11 @@ ADD crontab /crontab
 ADD run.sh /run.sh
 ADD speedtest.sh /speedtest.sh
 ADD alt_speedtest.sh /alt_speedtest.sh
+ADD iperf_test.sh /iperf_test.sh
 ADD speedtest_config.sample /speedtest_config.sample
 
 # Set permissions
-RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh
+RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh /iperf_test.sh
 
 # Expose volumes & ports
 VOLUME ["/var/spool/cron/crontabs"]

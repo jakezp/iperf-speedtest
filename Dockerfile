@@ -5,7 +5,7 @@ MAINTAINER jakezp@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 
 # Update and install packages
-RUN apt-get update && apt-get upgrade -yq && apt-get install supervisor iperf3 cron bc iputils-ping netcat jq curl speedtest-cli -yq
+RUN apt-get update && apt-get upgrade -yq && apt-get install tzdata supervisor iperf3 cron bc iputils-ping netcat jq curl speedtest-cli -yq
 
 # Add config files
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf

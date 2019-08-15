@@ -59,4 +59,7 @@ done
 
 # send message
 curl -s "${url}/sendMessage?chat_id=${chat_id}" --data-urlencode "text=$(cat /tmp/results.tmp)"
+curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$download_results" "${url}/sendDocument"
+curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$upload_results" "${url}/sendDocument"
+curl -F chat_id="${chat_id}" -F document=@"/root/speedtest/results/$packet_loss_results" "${url}/sendDocument"
 rm /tmp/results.tmp

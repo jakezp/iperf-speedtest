@@ -12,12 +12,14 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD crontab /crontab
 ADD run.sh /run.sh
 ADD speedtest.sh /speedtest.sh
+ADD alt_speedtest.sh /alt_speedtest.sh
 
 # Set permissions
-RUN chmod +x /run.sh /speedtest.sh
+RUN chmod +x /run.sh /speedtest.sh /alt_speedtest.sh
 
 # Expose volumes & ports
 VOLUME ["/var/spool/cron/crontabs"]
+VOLUME ["/root"]
 # EXPOSE 80 443
 
 WORKDIR /
